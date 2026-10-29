@@ -1,0 +1,26 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        if (! Schema::hasTable('seo')) {
+            throw new RuntimeException('The seo table is missing. Publish and run the RalphJSmit SEO migration first.');
+        }
+
+        if (! Schema::hasColumn('seo', 'schema_json')) {
+            Schema::table('seo', function (Blueprint $table): void {
+                $table->longText('schema_json')->nullable();
+            });
+        }
+    }
+
+    public function down(): void
+    {
+        // Preserve JSON-LD data, including a column that may have existed before installation.
+    }
+};
